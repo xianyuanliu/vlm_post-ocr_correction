@@ -1,6 +1,7 @@
 data/
 model/
 wandb/
+results/
 __pycache__/
 .idea/
 .vscode/
