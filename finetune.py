@@ -43,7 +43,7 @@ def main(args):
     with open(args.config, 'r') as f:
         config = yaml.safe_load(f)
 
-    seed = config['settings']['seed']
+    seed = config['train']['seed']
     set_seed(seed)
     
     wandb.init(
