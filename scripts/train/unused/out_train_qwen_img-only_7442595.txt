@@ -1,0 +1,44 @@
+/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/utils/hub.py:105: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+wandb: Currently logged in as: xianyuanliu (shef_aire) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.21.0
+wandb: Run data is saved locally in /users/ac1xxliu/projects/vlm_post-ocr_correction/wandb/run-20250806_134021-9byod38p
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run qwen2.5-vl-7b-img-only_06-Aug-01:40PM
+wandb: ⭐️ View project at https://wandb.ai/shef_aire/vlm-post-ocr
+wandb: 🚀 View run at https://wandb.ai/shef_aire/vlm-post-ocr/runs/9byod38p
+Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:11<00:44, 11.22s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:19<00:27,  9.30s/it]Loading checkpoint shards:  60%|██████    | 3/5 [00:30<00:20, 10.34s/it]Loading checkpoint shards:  80%|████████  | 4/5 [00:38<00:09,  9.41s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:40<00:00,  6.74s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:40<00:00,  8.15s/it]
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/trl/trainer/sft_trainer.py:401: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `SFTTrainer.__init__`. Use `processing_class` instead.
+  super().__init__(
+Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+wandb: WARNING The `run_name` is currently set to the same value as `TrainingArguments.output_dir`. If this was not intended, please specify a different run name by setting the `TrainingArguments.run_name` parameter.
+trainable params: 25,760,768 || all params: 8,317,927,424 || trainable%: 0.3097
+  0%|          | 0/265 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/users/ac1xxliu/projects/vlm_post-ocr_correction/finetune.py", line 114, in <module>
+    main(parser.parse_args())
+  File "/users/ac1xxliu/projects/vlm_post-ocr_correction/finetune.py", line 107, in main
+    trainer.train()
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/trl/trainer/sft_trainer.py", line 434, in train
+    output = super().train(*args, **kwargs)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/trainer.py", line 2245, in train
+    return inner_training_loop(
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/trainer.py", line 2514, in _inner_training_loop
+    batch_samples, num_items_in_batch = self.get_batch_samples(epoch_iterator, num_batches, args.device)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/trainer.py", line 5243, in get_batch_samples
+    batch_samples.append(next(epoch_iterator))
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/accelerate/data_loader.py", line 550, in __iter__
+    current_batch = next(dataloader_iter)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 630, in __next__
+    data = self._next_data()
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 673, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+  File "/users/ac1xxliu/projects/vlm_post-ocr_correction/finetune.py", line 26, in collate_fn
+    if image.height < min_size or image.width < min_size:
+AttributeError: 'list' object has no attribute 'height'
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mqwen2.5-vl-7b-img-only_06-Aug-01:40PM[0m at: [34mhttps://wandb.ai/shef_aire/vlm-post-ocr/runs/9byod38p[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20250806_134021-9byod38p/logs[0m

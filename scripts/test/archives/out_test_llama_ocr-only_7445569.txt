@@ -1,0 +1,19 @@
+/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/utils/hub.py:105: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The model weights are not tied. Please use the `tie_weights` method before using the `infer_auto_device` function.
+Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:15<01:03, 15.79s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:24<00:34, 11.41s/it]Loading checkpoint shards:  60%|██████    | 3/5 [00:26<00:14,  7.41s/it]Loading checkpoint shards:  80%|████████  | 4/5 [00:29<00:05,  5.53s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:33<00:00,  4.94s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:33<00:00,  6.66s/it]
+  0%|          | 0/2379 [00:00<?, ?it/s]  0%|          | 0/2379 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/users/ac1xxliu/projects/vlm_post-ocr_correction/eval.py", line 56, in <module>
+    main(parser.parse_args())
+  File "/users/ac1xxliu/projects/vlm_post-ocr_correction/eval.py", line 35, in main
+    inputs = processor(text=text, images=sample['images'], return_tensors='pt', padding=True).to(model.device)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/models/mllama/processing_mllama.py", line 317, in __call__
+    image_features = self.image_processor(images, **images_kwargs)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/image_processing_utils.py", line 42, in __call__
+    return self.preprocess(images, **kwargs)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/models/mllama/image_processing_mllama.py", line 767, in preprocess
+    images, num_tiles = pack_images(batch_images, max_image_tiles)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/models/mllama/image_processing_mllama.py", line 377, in pack_images
+    max_num_images = max([len(images) for images in batch_images])
+ValueError: max() arg is an empty sequence

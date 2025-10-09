@@ -1,0 +1,33 @@
+/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/utils/hub.py:105: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:07<00:30,  7.56s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:14<00:21,  7.04s/it]Loading checkpoint shards:  60%|██████    | 3/5 [00:21<00:14,  7.26s/it]Loading checkpoint shards:  80%|████████  | 4/5 [00:28<00:06,  6.89s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:30<00:00,  5.15s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:30<00:00,  6.03s/it]
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  0%|          | 0/2379 [00:00<?, ?it/s]/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `1e-06` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+  0%|          | 0/2379 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/users/ac1xxliu/projects/vlm_post-ocr_correction/eval.py", line 56, in <module>
+    main(parser.parse_args())
+  File "/users/ac1xxliu/projects/vlm_post-ocr_correction/eval.py", line 37, in main
+    outputs = model.generate(
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/generation/utils.py", line 2465, in generate
+    result = self._sample(
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/generation/utils.py", line 3431, in _sample
+    outputs = self(**model_inputs, return_dict=True)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py", line 1757, in forward
+    image_embeds = self.visual(pixel_values, grid_thw=image_grid_thw)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py", line 507, in forward
+    rotary_pos_emb = self.rot_pos_emb(grid_thw)
+  File "/users/ac1xxliu/.conda/envs/vlm-post-ocr/lib/python3.10/site-packages/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py", line 448, in rot_pos_emb
+    pos_ids = torch.cat(pos_ids, dim=0)
+RuntimeError: torch.cat(): expected a non-empty list of Tensors

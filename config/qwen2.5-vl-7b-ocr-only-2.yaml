@@ -1,0 +1,43 @@
+settings:
+  data: 'data/'
+  model: 'Qwen/Qwen2.5-VL-7B-Instruct'
+  adapter: 'model/qwen2.5-vl-7b-ocr-only-2'
+  chat_template: "{% set image_count = namespace(value=0) %}{% set video_count = namespace(value=0) %}{% for message in messages %}{% if loop.first and message['role'] != 'system' %}<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n{% endif %}<|im_start|>{{ message['role'] }}\n{% if message['content'] is string %}{{ message['content'] }}<|im_end|>\n{% else %}{% for content in message['content'] %}{% if content['type'] == 'image' or 'image' in content or 'image_url' in content %}{% set image_count.value = image_count.value + 1 %}{% if add_vision_id %}Picture {{ image_count.value }}: {% endif %}<|vision_start|><|image_pad|><|vision_end|>{% elif content['type'] == 'video' or 'video' in content %}{% set video_count.value = video_count.value + 1 %}{% if add_vision_id %}Video {{ video_count.value }}: {% endif %}<|vision_start|><|video_pad|><|vision_end|>{% elif 'text' in content %}{{ content['text'] }}{% endif %}{% endfor %}<|im_end|>\n{% endif %}{% endfor %}{% if add_generation_prompt %}<|im_start|>assistant\n{% endif %}"
+  freeze_img: false
+  use_ocr: true
+  use_img: false
+
+lora:
+  lora_alpha: 16
+  lora_dropout: 0.05
+  r: 8
+  bias: 'none'
+  target_modules: ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj', 'attn.qkv', 'attn.proj']
+  task_type: 'CAUSAL_LM'
+
+train:
+  num_train_epochs: 1
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 8
+  gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  optim: 'adamw_torch_fused'
+  learning_rate: 2.0e-4
+  lr_scheduler_type: 'constant'
+  save_strategy: 'no'
+  eval_strategy: 'steps'
+  logging_steps: 20
+  eval_steps: 20
+  bf16: true
+  tf32: true
+  max_grad_norm: 0.3
+  warmup_ratio: 0.03
+  dataset_text_field: ''
+  dataset_kwargs:
+    skip_prepare_dataset: true
+  remove_unused_columns: false
+  max_seq_length: 1024
+  report_to: 'wandb'
+  seed: 2
