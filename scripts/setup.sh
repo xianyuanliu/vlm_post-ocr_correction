@@ -11,7 +11,7 @@
 module load Anaconda3/2024.02-1
 module load cuDNN/8.6.0.163-CUDA-11.8.0
 
-cd ~/projects/vlm_post-ocr_correction/
+cd /mnt/parscratch/users/ac1xxliu/private/projects/vlm_post-ocr_correction/
 
 # Create environment
 conda create -n vlm-post-ocr python=3.10
