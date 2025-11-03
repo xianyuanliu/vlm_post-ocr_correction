@@ -40,4 +40,4 @@ train:
   remove_unused_columns: false
   max_seq_length: 1024
   report_to: 'wandb'
-  seed: 5
+  seed: 42
