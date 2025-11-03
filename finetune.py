@@ -43,9 +43,7 @@ def main(args):
     with open(args.config, 'r') as f:
         config = yaml.safe_load(f)
 
-    seed = config['train']['seed']
-    set_seed(seed)
-    
+    set_seed(42)
     wandb.init(
         entity='shef_aire',
         project='vlm-post-ocr',

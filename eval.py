@@ -1,3 +1,5 @@
+import datetime
+
 from datasets import Dataset
 from tqdm import tqdm
 from transformers import AutoModelForVision2Seq, AutoProcessor, AutoTokenizer
@@ -8,7 +10,6 @@ import pandas as pd
 import re
 import torch
 import yaml
-import datetime
 
 
 def main(args):
@@ -52,11 +53,10 @@ def main(args):
 
     results = compute_results(pd.read_csv(os.path.join(config['settings']['data'], 'test.csv')), preds)
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    results.to_csv(f"results/{os.path.basename(config['settings']['adapter'])}-{args.seed}-{timestamp}.csv", index=False)
+    results.to_csv(f"results/{os.path.basename(config['settings']['adapter'])}-{timestamp}.csv", index=False)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Evaluating fine-tuned models for post-OCR correction')
     parser.add_argument('--config', type=str, help='Path to config (YAML)')
-    parser.add_argument('--seed', type=int, default=42, help='Random seed (default: 42)')
     main(parser.parse_args())
