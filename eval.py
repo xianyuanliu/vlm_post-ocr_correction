@@ -15,7 +15,7 @@ def main(args):
     with open(args.config, 'r') as f:
         config = yaml.safe_load(f)
 
-    set_seed(args.seed)
+    set_seed(42)
 
     test = pd.read_csv(os.path.join(config['settings']['data'], 'test.csv'))
     test = Dataset.from_pandas(test)
