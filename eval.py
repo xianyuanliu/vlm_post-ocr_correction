@@ -30,21 +30,39 @@ def main(args):
     )
     model.load_adapter(config['settings']['adapter'])
     processor = AutoProcessor.from_pretrained(config['settings']['model'])
-    processor.tokenizer = AutoTokenizer.from_pretrained(config['settings']['adapter'])
+    # Keep consistent with training (optionally override template)
+    processor.tokenizer.chat_template = config['settings'].get(
+        'chat_template', processor.tokenizer.chat_template
+    )
+
+    def pick_eos_id(tok):
+        for s in ["<|im_end|>", "<|eot_id|>"]:
+            ids = tok.encode(s, add_special_tokens=False)
+            if len(ids) == 1:
+                return ids[0]
+        return tok.eos_token_id
+
+    eos_id = pick_eos_id(processor.tokenizer)
+    pad_id = processor.tokenizer.pad_token_id or processor.tokenizer.eos_token_id
 
     for sample in tqdm(test):
-        text = processor.tokenizer.apply_chat_template(sample['messages'][:2], tokenize=False, add_generation_prompt=True)
+        # system+user, generate assistant
+        text = processor.tokenizer.apply_chat_template(
+            sample['messages'][:2], tokenize=False, add_generation_prompt=True
+        )
         if sample['images']:
-            inputs = processor(text=text, images=sample['images'], return_tensors='pt', padding=True).to(model.device)
+            inputs = processor(text=text, images=sample['images'],
+                            return_tensors='pt', padding=True).to(model.device)
         else:
-            inputs = processor(text=text, return_tensors='pt', padding=True).to(model.device)
+            inputs = processor(text=text, return_tensors='pt',
+                            padding=True).to(model.device)
 
         outputs = model.generate(
             **inputs,
             max_new_tokens=1024,
             do_sample=False,
-            eos_token_id=processor.tokenizer.eos_token_id,
-            pad_token_id=processor.tokenizer.pad_token_id,
+            eos_token_id=eos_id,
+            pad_token_id=pad_id,
         )
         generated = [out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, outputs)]
         pred = processor.batch_decode(generated, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
