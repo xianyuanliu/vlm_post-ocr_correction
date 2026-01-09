@@ -30,19 +30,24 @@ def prepare_input(path_str: str) -> tuple[str, str | None]:
 
 
 def extract_text_vl(output) -> str:
-    """
-    Extract plain text from PaddleOCR-VL output
-    by concatenating block_content fields.
-    """
+    # Extract plain text from PaddleOCR-VL output (your version wraps payload under j["res"])
     if not output:
         return ""
 
     texts = []
     for res in output:
         j = getattr(res, "json", None)
-        if not isinstance(j, dict):
+
+        # res.json might be a method
+        if callable(j):
+            j = j()
+
+        if not isinstance(j, dict) or "res" not in j:
             continue
-        for blk in j.get("parsing_res_list", []):
+
+        payload = j["res"]
+
+        for blk in payload.get("parsing_res_list", []):
             content = blk.get("block_content")
             if isinstance(content, str) and content.strip():
                 texts.append(content.strip())
@@ -61,7 +66,8 @@ def cleanup_temp_dir(temp_dir: str | None) -> None:
 # Initialize PaddleOCR-VL once
 pipeline = PaddleOCRVL()
 
-input_csv = Path("./data/test_paddle.csv")
+# input_csv = Path("./data/test_paddle.csv")
+input_csv = Path("./data/test.csv")
 patch_dir = Path("data/patch")
 
 output_dir = Path("paddleocr_output")
