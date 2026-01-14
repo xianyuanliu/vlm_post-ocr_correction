@@ -6,6 +6,8 @@ import statistics
 
 import evaluate
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 
 def read_text(path: Path) -> str:
     text = path.read_text(encoding="utf-8", errors="replace")
@@ -21,10 +23,10 @@ def collect_texts(dir_path: Path) -> dict[str, str]:
 
 
 def resolve_ocr_dir() -> Path:
-    ocr_dir = Path("BLN600/OCR Text")
+    ocr_dir = BASE_DIR / "BLN600/OCR Text"
     if ocr_dir.exists():
         return ocr_dir
-    fallback = Path("BLN600/OCT Text")
+    fallback = BASE_DIR / "BLN600/OCT Text"
     if fallback.exists():
         print("Using BLN600/OCT Text (OCR Text not found).")
         return fallback
@@ -64,17 +66,17 @@ def safe_compute(metric, pred: str | None, ref: str | None) -> float | None:
 def main(use_test_only: bool = False) -> None:
 
     if use_test_only:
-        test_stems = load_test_stems(Path("data/test.csv")) 
-        out_path = Path("cer_wer_summary_test.csv")
+        test_stems = load_test_stems(BASE_DIR / "data/test.csv")
+        out_path = BASE_DIR / "cer_wer_summary_test.csv"
     else:
         test_stems = None
-        out_path = Path("cer_wer_summary.csv")
+        out_path = BASE_DIR / "cer_wer_summary.csv"
 
 
 
-    gt_dir = Path("BLN600/Ground Truth")
+    gt_dir = BASE_DIR / "BLN600/Ground Truth"
     ocr_dir = resolve_ocr_dir()
-    paddle_dir = Path("paddleocr_output/PaddleOCRVL_Text")
+    paddle_dir = BASE_DIR / "paddleocr_output/PaddleOCRVL_Text"
 
     gt_texts = collect_texts(gt_dir)
     ocr_texts = collect_texts(ocr_dir)

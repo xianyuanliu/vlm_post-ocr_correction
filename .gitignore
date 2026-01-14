@@ -11,3 +11,4 @@ __pycache__/
 *.log
 *.ckpt
 *.csv
+__pycache__/utils.cpython-310.pyc

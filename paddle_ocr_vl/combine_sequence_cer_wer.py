@@ -7,6 +7,8 @@ import statistics
 
 import evaluate
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 
 TARGET_SETTINGS = {
     "llama-3.2-11b-vision-img-only",
@@ -159,10 +161,11 @@ def process_file(
 
 def main(use_all_results: bool = False) -> None:
     if use_all_results:
-        input_paths = sorted(Path("results").glob("*.csv"))
+        input_paths = sorted((BASE_DIR / "results").glob("*.csv"))
     else:
         input_paths = [
-            Path("results/llama-3.2-11b-vision-img-only-1-20251104_020411.csv")
+            BASE_DIR
+            / "results/llama-3.2-11b-vision-img-only-1-20251104_020411.csv"
         ]
 
     cer_metric = evaluate.load("cer")

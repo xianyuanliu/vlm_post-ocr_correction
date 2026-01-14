@@ -5,6 +5,8 @@ from pathlib import Path
 from PIL import Image
 from paddleocr import PaddleOCRVL
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 
 def prepare_input(path_str: str) -> tuple[str, str | None]:
     """
@@ -71,8 +73,8 @@ def save_text(out_dir: Path, image_path: Path, text: str) -> None:
 
 
 def main() -> None:
-    input_dir = Path("./BLN600/Images")
-    output_dir = Path("./paddleocr_output/PaddleOCRVL_Text")
+    input_dir = BASE_DIR / "BLN600/Images"
+    output_dir = BASE_DIR / "paddleocr_output/PaddleOCRVL_Text"
 
     if not input_dir.exists():
         raise FileNotFoundError(f"Input directory not found: {input_dir}")
