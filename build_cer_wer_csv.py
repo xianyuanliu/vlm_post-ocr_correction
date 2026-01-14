@@ -31,13 +31,47 @@ def resolve_ocr_dir() -> Path:
     return ocr_dir
 
 
+def load_test_stems(path: Path) -> set[str]:
+    if not path.exists():
+        return set()
+
+    stems: set[str] = set()
+    with path.open(newline="", encoding="utf-8", errors="replace") as f:
+        reader = csv.DictReader(f)
+        if not reader.fieldnames:
+            return set()
+
+        if "Sample" in reader.fieldnames:
+            for row in reader:
+                value = (row.get("Sample") or "").strip()
+                if value:
+                    stems.add(value)
+        elif "Image Patch" in reader.fieldnames:
+            for row in reader:
+                value = (row.get("Image Patch") or "").strip()
+                if value:
+                    stems.add(Path(value).stem)
+
+    return stems
+
+
 def safe_compute(metric, pred: str | None, ref: str | None) -> float | None:
     if not pred or not ref:
         return None
     return metric.compute(predictions=[pred], references=[ref])
 
 
-def main() -> None:
+def main(use_test_only: bool = False) -> None:
+
+    if use_test_only:
+        test_stems = load_test_stems(Path("data/test.csv")) 
+        out_path = Path("cer_wer_summary_test.csv")
+    else:
+        test_stems = None
+        out_path = Path("cer_wer_summary.csv")
+
+
+
     gt_dir = Path("BLN600/Ground Truth")
     ocr_dir = resolve_ocr_dir()
     paddle_dir = Path("paddleocr_output/PaddleOCRVL_Text")
@@ -53,7 +87,6 @@ def main() -> None:
     cer_metric = evaluate.load("cer")
     wer_metric = evaluate.load("wer")
 
-    out_path = Path("cer_wer_summary.csv")
     fieldnames = [
         "name",
         "ground_truth",
@@ -74,7 +107,12 @@ def main() -> None:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
 
-        for stem in sorted(gt_texts.keys()):
+        if use_test_only and test_stems:
+            stems = sorted(gt_texts.keys() & test_stems)
+        else:
+            stems = sorted(gt_texts.keys())
+
+        for stem in stems:
             gt = gt_texts.get(stem, "")
             ocr = ocr_texts.get(stem, "")
             paddle = paddle_texts.get(stem, "")
@@ -108,6 +146,9 @@ def main() -> None:
 
     print(f"Saved CSV to {out_path}")
     print(f"Ground truth files: {len(gt_texts)}")
+    if use_test_only:
+        print(f"Test.csv stems: {len(test_stems)}")
+        print(f"Filtered by test.csv: {len(stems)}")
     print(f"OCR matched: {len(cer_ocr_vals)}")
     print(f"PaddleOCRVL matched: {len(cer_paddle_vals)}")
 
@@ -120,4 +161,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main(use_test_only=True)
