@@ -48,6 +48,6 @@ def main(input_csv):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Evaluate OCR corrections at sample level')
-    parser.add_argument('input', help='Input CSV file from results/')
+    parser.add_argument('--input', default='cer_wer_summary_test.csv', help='Input CSV file from results/')
     args = parser.parse_args()
     main(args.input)
