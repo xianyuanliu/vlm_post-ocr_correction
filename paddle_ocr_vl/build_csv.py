@@ -109,10 +109,7 @@ def main(use_test_only: bool = False) -> None:
     print(f"Saved CSV to {out_path}")
     print(f"Ground truth files: {len(gt_texts)}")
     if use_test_only:
-        print(f"Test.csv stems: {len(test_stems)}")
         print(f"Filtered by test.csv: {len(stems)}")
-    print(f"OCR matched: {len(ocr_texts)}")
-    print(f"PaddleOCRVL matched: {len(paddle_texts)}")
 
 
 if __name__ == "__main__":
